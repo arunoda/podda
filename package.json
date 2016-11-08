@@ -1,10 +1,10 @@
 {
   "name": "podda",
   "version": "0.0.0",
-  "description": "Podda Component",
+  "description": "Simple Reactive DataStore for JavaScript",
   "repository": {
     "type": "git",
-    "url": "https://github.com/you/repo.git"
+    "url": "https://github.com/arunoda/podda.git"
   },
   "license": "MIT",
   "scripts": {
