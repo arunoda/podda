@@ -139,3 +139,5 @@ console.log(store.get('name')) // logs => Arunoda
 ## Using with React
 
 In order to use this with React, you need to get help from a data container. [React Komposer](https://github.com/arunoda/react-komposer) is an ideal tool for that.
+
+Have a look at [this example app](http://www.webpackbin.com/41cWy99ez).
