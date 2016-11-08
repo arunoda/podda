@@ -31,6 +31,20 @@ describe('Podda', () => {
         bbc: { aa: 10 },
       });
     });
+
+    it('should accept default values', () => {
+      const store = new Podda({ aa: 10, bb: 20 });
+      expect(store.get('aa')).to.be.equal(10);
+      expect(store.get('bb')).to.be.equal(20);
+    });
+
+    it('should clone default values before setting it', () => {
+      const defaults = { aa: 10 };
+      const store = new Podda(defaults);
+
+      defaults.aa = 20;
+      expect(store.get('aa')).to.be.equal(10);
+    });
   });
 
   describe('subscribe', () => {

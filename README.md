@@ -30,7 +30,8 @@ Let's subscribe to the data store and set an item.
 ```js
 import Podda from 'podda';
 
-const store = new Podda();
+const defaults = { 'race': 'Human' };
+const store = new Podda(defaults);
 
 // Subscribe for changes
 const stopSubscription = store.subscribe((data) => {

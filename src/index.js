@@ -1,6 +1,6 @@
 export default class Podda {
-  constructor() {
-    this.data = {};
+  constructor(defaults = {}) {
+    this.data = { ...defaults };
     this.callbacks = [];
     this.watchCallbacks = {};
   }
