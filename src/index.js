@@ -67,7 +67,7 @@ export default class Podda {
   watchFor(key, expectedValue, callback) {
     const callbackAndCheck = (value) => {
       if (value === expectedValue) {
-        callback();
+        callback(value);
       }
     };
 
