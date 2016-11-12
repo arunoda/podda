@@ -23,6 +23,18 @@ export default class Podda {
     this.fire(key, value);
   }
 
+  update(fn) {
+    const currentState = this.data.toJS();
+    const newFields = fn(currentState);
+    if (newFields === null || newFields === undefined) {
+      throw new Error('You must provide an object with updated values for Podda.set(fn)');
+    }
+
+    Object.keys(newFields).forEach((key) => {
+      this.set(key, newFields[key]);
+    });
+  }
+
   get(key) {
     const value = this.data.get(key);
     if (value === null || value === undefined) {

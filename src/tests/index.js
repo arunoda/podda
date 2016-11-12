@@ -22,6 +22,41 @@ describe('Podda', () => {
       expect(store.get('abc')).to.be.equal('ppc');
     });
 
+    it('should support to update with a function', () => {
+      const store = new Podda({
+        abc: 10,
+        bbc: 20,
+      });
+
+      store.update((state) => {
+        expect(state).to.deep.equal({ abc: 10, bbc: 20 });
+        // this is not going to add to the store.
+        state.someItem = 1000; // eslint-disable-line
+
+        return { bbc: 50, cnn: 100 };
+      });
+
+      expect(store.getAll()).to.deep.equal({
+        abc: 10,
+        bbc: 50,
+        cnn: 100,
+      });
+    });
+
+    it('should throw an error if update function returns nothing', () => {
+      const store = new Podda();
+      const run1 = () => {
+        store.update(() => null);
+      };
+
+      const run2 = () => {
+        store.update(() => {});
+      };
+
+      expect(run1).to.throw(/an object with updated values/);
+      expect(run2).to.throw(/an object with updated values/);
+    });
+
     it('should support getting all the values', () => {
       const store = new Podda();
       store.set('abc', 'kkr');

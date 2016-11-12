@@ -73,6 +73,19 @@ Get a value by the give key.
 store.get('key');
 ```
 
+### update
+
+Update multiple entries of the store at once. While updating, you could accept the current state of the store as well.
+
+```js
+store.update(function(state) {
+  return {
+    newField: 10,
+    existingField: !Boolean(existingField)
+  };
+});
+```
+
 ### getAll
 
 Get all the key values pairs in the store as a map.
