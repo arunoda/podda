@@ -91,4 +91,14 @@ export default class Podda {
 
     return this.watch(key, callbackAndCheck);
   }
+
+  registerAPI(method, fn) {
+    if (this[method]) {
+      throw new Error(`Cannot add an API for the existing API: "${method}".`);
+    }
+
+    this[method] = (...args) => {
+      return fn(this, ...args);
+    };
+  }
 }
