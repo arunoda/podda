@@ -202,4 +202,25 @@ describe('Podda', () => {
       store.set('kkr', 30);
     });
   });
+
+  describe('registerAPI', () => {
+    it('should add new APIs to the store', () => {
+      const store = new Podda({ lights: false });
+      store.registerAPI('toggle', (s, key) => {
+        s.set(key, !store.get(key));
+        return s.get(key);
+      });
+
+      expect(store.toggle('lights')).to.be.equal(true);
+    });
+
+    it('should not override existing APIs', () => {
+      const store = new Podda({ lights: false });
+      const run = () => {
+        store.registerAPI('set', () => null);
+      };
+
+      expect(run).to.throw(/Cannot add an API for the existing API: "set"/);
+    });
+  });
 });

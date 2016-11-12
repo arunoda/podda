@@ -150,6 +150,21 @@ store.fire('name', 'Matt'); // logs => Name is: Matt
 console.log(store.get('name')) // logs => Arunoda
 ```
 
+### registerAPI
+
+With this, you'll be able to add new features to the store.
+For an example, let's say we are using toggle functionality in our store a lot. So, we can add an API for that like this:
+
+```js
+store.registerAPI('toggle', (store, key) => {
+  store.set(key, !store.get(key));
+  return store.get(key);
+});
+
+// Then we can use it like this:
+console.log('Toggled value for lights is:', store.toggle('lights'));
+```
+
 ## Using with React
 
 In order to use this with React, you need to get help from a data container. [React Komposer](https://github.com/arunoda/react-komposer) is an ideal tool for that.
