@@ -30,7 +30,7 @@ export default class Podda {
     }
 
     Object.keys(newFields).forEach((key) => {
-      this.set(key, newFields[key]);
+      this._setItem(key, newFields[key]);
     });
   }
 
