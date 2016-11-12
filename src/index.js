@@ -14,7 +14,27 @@ export default class Podda {
     });
   }
 
-  set(key, value) {
+  set(arg1, arg2) {
+    if (typeof arg1 === 'function') {
+      return this._setFn(arg1);
+    }
+
+    return this._setItem(arg1, arg2);
+  }
+
+  _setFn(fn) {
+    const currentState = this.data.toJS();
+    const newFields = fn(currentState);
+    if (newFields === null || newFields === undefined) {
+      throw new Error('You must provide an object with updated values for Podda.set(fn)');
+    }
+
+    Object.keys(newFields).forEach((key) => {
+      this.set(key, newFields[key]);
+    });
+  }
+
+  _setItem(key, value) {
     this.data = this.data.set(key, Immutable.fromJS(value));
     this.callbacks.forEach((cb) => {
       cb(this.getAll());
