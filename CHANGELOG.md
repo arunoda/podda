@@ -1,5 +1,15 @@
 # Changelog
 
+### v1.2.0
+13-November-2016
+
+Add a new set of API and few improvements.
+
+* Move eslint-plugin-react to the devDependancies. [b9e1b78](https://github.com/arunoda/podda/commit/b9e1b7828addb591737391628080c390503e2ad6)
+* Use Immutable as the internal data storage. [PR1](https://github.com/arunoda/podda/pull/1)
+* Add an update API to update the multiple entries in the store. [PR2](https://github.com/arunoda/podda/pull/2)
+* Add a way to register a new API. [PR3](https://github.com/arunoda/podda/pull/3)
+
 ### v1.1.0
 08-November-2016
 
