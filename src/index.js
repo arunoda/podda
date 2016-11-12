@@ -14,15 +14,16 @@ export default class Podda {
     });
   }
 
-  set(arg1, arg2) {
-    if (typeof arg1 === 'function') {
-      return this._setFn(arg1);
-    }
+  set(key, value) {
+    this.data = this.data.set(key, Immutable.fromJS(value));
+    this.callbacks.forEach((cb) => {
+      cb(this.getAll());
+    });
 
-    return this._setItem(arg1, arg2);
+    this.fire(key, value);
   }
 
-  _setFn(fn) {
+  update(fn) {
     const currentState = this.data.toJS();
     const newFields = fn(currentState);
     if (newFields === null || newFields === undefined) {
@@ -30,17 +31,8 @@ export default class Podda {
     }
 
     Object.keys(newFields).forEach((key) => {
-      this._setItem(key, newFields[key]);
+      this.set(key, newFields[key]);
     });
-  }
-
-  _setItem(key, value) {
-    this.data = this.data.set(key, Immutable.fromJS(value));
-    this.callbacks.forEach((cb) => {
-      cb(this.getAll());
-    });
-
-    this.fire(key, value);
   }
 
   get(key) {

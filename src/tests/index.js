@@ -22,13 +22,13 @@ describe('Podda', () => {
       expect(store.get('abc')).to.be.equal('ppc');
     });
 
-    it('should support a function for set', () => {
+    it('should support to update with a function', () => {
       const store = new Podda({
         abc: 10,
         bbc: 20,
       });
 
-      store.set((state) => {
+      store.update((state) => {
         expect(state).to.deep.equal({ abc: 10, bbc: 20 });
         // this is not going to add to the store.
         state.someItem = 1000; // eslint-disable-line
@@ -43,14 +43,14 @@ describe('Podda', () => {
       });
     });
 
-    it('should throw an error if set function returns nothing', () => {
+    it('should throw an error if update function returns nothing', () => {
       const store = new Podda();
       const run1 = () => {
-        store.set(() => null);
+        store.update(() => null);
       };
 
       const run2 = () => {
-        store.set(() => {});
+        store.update(() => {});
       };
 
       expect(run1).to.throw(/an object with updated values/);
