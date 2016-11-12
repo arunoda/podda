@@ -1,6 +1,8 @@
+import Immutable from 'immutable';
+
 export default class Podda {
   constructor(defaults = {}) {
-    this.data = { ...defaults };
+    this.data = Immutable.Map(defaults); //eslint-disable-line
     this.callbacks = [];
     this.watchCallbacks = {};
   }
@@ -13,7 +15,7 @@ export default class Podda {
   }
 
   set(key, value) {
-    this.data[key] = value;
+    this.data = this.data.set(key, Immutable.fromJS(value));
     this.callbacks.forEach((cb) => {
       cb(this.getAll());
     });
@@ -22,12 +24,16 @@ export default class Podda {
   }
 
   get(key) {
-    return this.data[key];
+    const value = this.data.get(key);
+    if (value === null || value === undefined) {
+      return value;
+    }
+
+    return value.toJS ? value.toJS() : value;
   }
 
   getAll() {
-    const newData = { ...this.data };
-    return newData;
+    return this.data.toJS();
   }
 
   subscribe(cb) {
