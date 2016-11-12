@@ -28,12 +28,13 @@
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^1.16.0",
     "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.6.0",
     "mocha": "^3.0.2",
     "sinon": "^1.17.6"
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "eslint-plugin-react": "^6.6.0"
+    "immutable": "^3.8.1"
   },
   "main": "dist/index.js",
   "engines": {
