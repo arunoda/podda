@@ -1,6 +1,6 @@
 {
   "name": "podda",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Simple Reactive DataStore for JavaScript",
   "repository": {
     "type": "git",
