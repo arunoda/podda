@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.2.1
+13-November-2016
+
+Update the Webpackbin link for the React example.
+
 ### v1.2.0
 13-November-2016
 
