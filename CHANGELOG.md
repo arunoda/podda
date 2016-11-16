@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.2.2
+17-November-2016
+
+Now .update() only trigger subscriptions only once even it has many keys.
+
 ### v1.2.1
 13-November-2016
 
