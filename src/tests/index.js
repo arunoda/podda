@@ -106,6 +106,22 @@ describe('Podda', () => {
       stop();
       store.set('ppd', 'kky');
     });
+
+    it('should fire subsription only once for update', () => {
+      const store = new Podda();
+      let count = 0;
+      store.subscribe((data) => {
+        expect(data).to.deep.equal({ abc: 10, bbc: 20 });
+        count += 1;
+      });
+
+      store.update(() => ({
+        abc: 10,
+        bbc: 20,
+      }));
+
+      expect(count).to.be.equal(1);
+    });
   });
 
   describe('watch', () => {

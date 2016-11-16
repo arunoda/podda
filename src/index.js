@@ -7,6 +7,12 @@ export default class Podda {
     this.watchCallbacks = {};
   }
 
+  fireSubscriptions() {
+    this.callbacks.forEach((cb) => {
+      cb(this.getAll());
+    });
+  }
+
   fire(key, value) {
     const watchCallbacks = this.watchCallbacks[key] || [];
     watchCallbacks.forEach((callback) => {
@@ -14,13 +20,14 @@ export default class Podda {
     });
   }
 
-  set(key, value) {
+  _set(key, value) {
     this.data = this.data.set(key, Immutable.fromJS(value));
-    this.callbacks.forEach((cb) => {
-      cb(this.getAll());
-    });
-
     this.fire(key, value);
+  }
+
+  set(key, value) {
+    this._set(key, value);
+    this.fireSubscriptions();
   }
 
   update(fn) {
@@ -31,8 +38,9 @@ export default class Podda {
     }
 
     Object.keys(newFields).forEach((key) => {
-      this.set(key, newFields[key]);
+      this._set(key, newFields[key]);
     });
+    this.fireSubscriptions();
   }
 
   get(key) {
