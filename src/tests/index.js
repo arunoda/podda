@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import Podda from '../';
+import Immutable from 'immutable';
 
 const { describe, it } = global;
 
@@ -239,4 +240,49 @@ describe('Podda', () => {
       expect(run).to.throw(/Cannot add an API for the existing API: "set"/);
     });
   });
+
+  describe('forceSetState', () => {
+    it('should reset the store\'s state', () => {
+      const store = new Podda({ abc: 10 });
+      const state = Immutable.fromJS({ abc: 15, ccd: 20 });
+      store.forceSetState(state);
+
+      expect(store.get('abc')).to.be.equal(15);
+      expect(store.get('ccd')).to.be.equal(20);
+    });
+
+    it('should fire all subscriptions', (done) => {
+      const store = new Podda({ abc: 10 });
+      const state = Immutable.fromJS({ abc: 15, ccd: 20 });
+
+      const stop = store.subscribe((s) => {
+        expect(s).to.deep.equal(state.toJS());
+        done();
+        stop();
+      });
+
+      store.forceSetState(state);
+    });
+
+    it('should fire all watchers', () => {
+      const store = new Podda({ abc: 10 });
+      const fired = [];
+
+      const getWatcher = (key) => {
+        return (value) => fired.push({ key, value });
+      };
+
+      store.watch('abc', getWatcher('abc'));
+      store.watch('bbc', getWatcher('bbc'));
+      store.watch('ccd', getWatcher('ccd'));
+
+      const state = Immutable.fromJS({ abc: 15, ccd: 20 });
+      store.forceSetState(state);
+
+      expect(fired).to.deep.equal([
+        { key: 'abc', value: 15 },
+        { key: 'ccd', value: 20 },
+      ]);
+    });
+  })
 });

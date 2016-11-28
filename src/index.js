@@ -112,12 +112,13 @@ export default class Podda {
 
   forceSetState(state) {
     this.data = state;
+    
     // Fire subscriptions
     this.fireSubscriptions();
 
     // Fire watchers
-    this.data.entries(([key, value]) => {
-      this.fire(key, value.toJS());
+    this.data.keySeq().toArray().forEach((key) => {
+      this.fire(key, this.get(key));
     });
   }
 }
