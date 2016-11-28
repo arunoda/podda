@@ -41,7 +41,7 @@ export default class Oplog {
     }
 
     let state = this.initialState;
-    if (this.ops.length === 0 || this.ops[0].opId < opId) {
+    if (this.ops.length === 0 || this.ops[0].opId > opId) {
       this.store.forceSetState(state);
       return null;
     }
