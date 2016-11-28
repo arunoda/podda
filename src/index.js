@@ -112,7 +112,7 @@ export default class Podda {
 
   forceSetState(state) {
     this.data = state;
-    
+
     // Fire subscriptions
     this.fireSubscriptions();
 

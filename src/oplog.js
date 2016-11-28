@@ -1,3 +1,5 @@
+import Immutable from 'immutable';
+
 export default class Oplog {
   constructor() {
     this.store = null;
@@ -16,19 +18,20 @@ export default class Oplog {
   addOp(type, payload) {
     // Do not accept any ops when paused
     if (this.paused) return;
-    const opId = this.id = this.id += 1;
-    const timestamp = Date.now();
 
-    this.ops.push({
+    const opId = this.id = this.id += 1;
+    const op = {
       opId,
       type,
       payload,
       timestamp: Date.now(),
-    });
+    };
+
+    this.ops.push(op);
 
     // Fire watchers
     this.watchCallbacks.forEach((callback) => {
-      callback(opId, timestamp);
+      callback(op);
     });
   }
 
@@ -41,10 +44,29 @@ export default class Oplog {
       return null;
     }
 
-    this.ops.forEach((op) => {
-      const { key, value } = op.payload;
-      state = state.set(key, value);
-    });
+    for (const op of this.ops) {
+      switch (op.type) {
+        case 'set': {
+          const { key, value } = op.payload;
+          state = state.set(key, Immutable.fromJS(value));
+          break;
+        }
+        case 'update': {
+          /* eslint-disable */
+          op.payload.forEach(({ key, value }) => {
+            state = state.set(key, Immutable.fromJS(value));
+          });
+          /* eslint-enable */
+          break;
+        }
+        default:
+          throw new Error(`unsupported op type: ${op.type}`);
+      }
+
+      if (op.opId === opId) {
+        break;
+      }
+    }
 
     this.store.forceSetState(state);
     return null;

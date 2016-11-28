@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import Podda from '../';
 import Immutable from 'immutable';
+import Podda from '../';
 
 const { describe, it } = global;
 
@@ -269,7 +269,7 @@ describe('Podda', () => {
       const fired = [];
 
       const getWatcher = (key) => {
-        return (value) => fired.push({ key, value });
+        return value => fired.push({ key, value });
       };
 
       store.watch('abc', getWatcher('abc'));
@@ -284,5 +284,5 @@ describe('Podda', () => {
         { key: 'ccd', value: 20 },
       ]);
     });
-  })
+  });
 });
