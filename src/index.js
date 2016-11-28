@@ -109,4 +109,15 @@ export default class Podda {
       return fn(this, ...args);
     };
   }
+
+  forceSetState(state) {
+    this.data = state;
+    // Fire subscriptions
+    this.fireSubscriptions();
+
+    // Fire watchers
+    this.data.entries(([key, value]) => {
+      this.fire(key, value.toJS());
+    });
+  }
 }
