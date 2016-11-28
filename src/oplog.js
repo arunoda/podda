@@ -36,7 +36,9 @@ export default class Oplog {
   }
 
   jumpTo(opId) {
-    this.pause(opId);
+    if (!opId || typeof opId !== 'number') {
+      throw new Error('You need to provide a valid opId');
+    }
 
     let state = this.initialState;
     if (this.ops.length === 0 || this.ops[0].opId < opId) {
@@ -53,8 +55,8 @@ export default class Oplog {
         }
         case 'update': {
           /* eslint-disable */
-          op.payload.forEach(({ key, value }) => {
-            state = state.set(key, Immutable.fromJS(value));
+          Object.keys(op.payload).forEach((key) => {
+            state = state.set(key, Immutable.fromJS(op.payload[key]));
           });
           /* eslint-enable */
           break;
@@ -69,6 +71,7 @@ export default class Oplog {
     }
 
     this.store.forceSetState(state);
+    this.pause(opId);
     return null;
   }
 
@@ -97,8 +100,7 @@ export default class Oplog {
   }
 
   getAllOps() {
-    // We only return opId and timestamp only.
-    return this.ops.map(({ opId, timestamp }) => ({ opId, timestamp }));
+    return this.ops;
   }
 
   watch(cb) {

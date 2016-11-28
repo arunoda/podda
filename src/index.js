@@ -1,10 +1,15 @@
 import Immutable from 'immutable';
 
 export default class Podda {
-  constructor(defaults = {}) {
+  constructor(defaults = {}, oplog) {
     this.data = Immutable.Map(defaults); //eslint-disable-line
     this.callbacks = [];
     this.watchCallbacks = {};
+    this.oplog = oplog;
+
+    if (this.oplog) {
+      this.oplog.setStore(this);
+    }
   }
 
   fireSubscriptions() {
@@ -28,6 +33,9 @@ export default class Podda {
   set(key, value) {
     this._set(key, value);
     this.fireSubscriptions();
+    if (this.oplog) {
+      this.oplog.addOp('set', { key, value });
+    }
   }
 
   update(fn) {
@@ -41,6 +49,10 @@ export default class Podda {
       this._set(key, newFields[key]);
     });
     this.fireSubscriptions();
+
+    if (this.oplog) {
+      this.oplog.addOp('update', newFields);
+    }
   }
 
   get(key) {
