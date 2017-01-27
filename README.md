@@ -47,7 +47,7 @@ stopSubscription();
 store.set('city', 'Colombo'); // logs nothing.
 ```
 
-**[Play with this example](#podda)**
+**[Play with this example](http://www.webpackbin.com/4ynVqTQPM)**
 
 ## API
 
